@@ -1,4 +1,4 @@
-import pytest   # type: ignore[import-untyped]
+import pytest  # type: ignore[import-untyped]
 
 from conflux_s3_utils import S3Uri
 
@@ -9,8 +9,17 @@ def test_s3uri_from_str():
     assert s3uri.path == "path/to/file"
 
 
+def test_bucket_s3uri_from_str():
+    s3uri = S3Uri.from_str("s3://bucket/")
+    assert s3uri.bucket == "bucket"
+    assert s3uri.path == ""
+    s3uri = S3Uri.from_str("s3://bucket")
+    assert s3uri.bucket == "bucket"
+    assert s3uri.path == ""
+
+
 @pytest.mark.parametrize(
-    "s3uri_str", ["s3://bucket", "/bucket", "bucket/path/to/file", "file://bucket/path/to/file"]
+    "s3uri_str", ["/bucket", "bucket/path/to/file", "file://bucket/path/to/file"]
 )
 def test_s3uri_from_str_fail(s3uri_str):
     with pytest.raises(Exception):

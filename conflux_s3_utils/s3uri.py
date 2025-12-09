@@ -23,7 +23,6 @@ class S3Uri(NamedTuple):
         parsed = urlparse(s3_uri_str)
         assert parsed.scheme == "s3"
         path = parsed.path.lstrip("/")
-        assert path != ""
         return S3Uri(bucket=parsed.netloc, path=path)
 
     def __str__(self) -> str:

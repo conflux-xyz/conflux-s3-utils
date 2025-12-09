@@ -126,13 +126,13 @@ class S3Client:
 
     def list_objects(self, s3uri: S3Uri, recursive=False) -> Iterable[S3Uri]:
         """
-        List objects under the given S3 URI.
+        List objects under the given S3 URI, assuming it is a "directory".
         If `recursive` is False, only list objects directly under the given path.
         """
         path = s3uri.path.rstrip("/")
         bucket = s3uri.bucket
         delimiter = "" if recursive else "/"
-        prefix = f"{path}/"
+        prefix = "" if path == "" else f"{path}/"
         paginator = self.client.get_paginator("list_objects_v2")
         page_iterator = paginator.paginate(
             Bucket=bucket, Prefix=prefix, Delimiter=delimiter
