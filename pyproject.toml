@@ -17,8 +17,8 @@ dev = [
     "ty>=0",
 ]
 docs = [
+    "furo>=2025",
     "sphinx>=7,<8",
-    "sphinx-rtd-theme>=2.0",
 ]
 
 [tool.uv]

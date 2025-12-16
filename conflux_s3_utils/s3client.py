@@ -26,7 +26,7 @@ _DEFAULT_MULTIPART_CHUNKSIZE_BYTES = _DEFAULT_MULTIPART_CHUNKSIZE_MB * 1024 * 10
 
 class S3Client:
     """
-    A S3 client that interacts with S3 using type-safe S3Uri objects
+    A S3 client that interacts with S3 using type-safe ``S3Uri`` objects
     and provides convenient methods for common operations.
     """
 
@@ -36,7 +36,7 @@ class S3Client:
     ):
         """
         Initialize an S3Client.
-        If `client` is not provided, a default boto3 S3 client will be created
+        If ``client`` is not provided, a default boto3 S3 client will be created
         """
         if client is not None:
             self.client = client
@@ -49,12 +49,13 @@ class S3Client:
     def open(self, s3uri: S3Uri, mode: str = "rb") -> fsspec.core.OpenFile:
         """Open an S3 object as a file-like object using fsspec.
         Note that this can be used with a context manager:
-        ```python
-        s3 = S3Client()
-        with s3.open(s3uri) as f:
-            # Do stuff with `f`.
-            # It will automatically be closed when exiting the block.
-        ```
+
+        .. code-block:: python
+
+            s3 = S3Client()
+            with s3.open(s3uri) as f:
+                # Do stuff with `f`.
+                # It will automatically be closed when exiting the block.
         """
         file = fsspec.open(str(s3uri), mode=mode)
         assert isinstance(file, fsspec.core.OpenFile)
@@ -70,11 +71,11 @@ class S3Client:
         """
         Interact with an object in S3 by opening a corresponding file locally.
 
-        With read mode (`mode` contains "r"), the object is downloaded from S3 into
+        With read mode (``mode`` contains "r"), the object is downloaded from S3 into
         a temporary directory and then a file handle to the local file is provided.
         The file and the temporary directory are cleaned up when the context manager exits.
 
-        With write mode (`mode` contains "w"), a file is created in a temporary directory
+        With write mode (``mode`` contains "w"), a file is created in a temporary directory
         and a file handle to the local file is provided. Upon exiting the context manager,
         the file is uploaded to S3.
         The file and temporary directry are cleaned up when the context manager exits.
@@ -127,7 +128,7 @@ class S3Client:
     def list_objects(self, s3uri: S3Uri, recursive=False) -> Iterable[S3Uri]:
         """
         List objects under the given S3 URI, assuming it is a "directory".
-        If `recursive` is False, only list objects directly under the given path.
+        If ``recursive`` is ``False``, only list objects directly under the given path.
         """
         path = s3uri.path.rstrip("/")
         bucket = s3uri.bucket
@@ -144,7 +145,7 @@ class S3Client:
 
     def copy_object(self, src: S3Uri, dest: S3Uri) -> None:
         """
-        Copy an object from `src` to `dest`.
+        Copy an object from ``src`` to ``dest``.
         """
         self.client.copy_object(
             Bucket=dest.bucket,
